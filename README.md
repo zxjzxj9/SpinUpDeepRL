@@ -26,19 +26,25 @@ For Gaussian distribution, in order to make distribution differntiable, we need 
 
 **1.4** Trajectorie
 A trajectory $\tau$ is defined as a squence of state $s_t$ and action $a_t$.
+
 ![Eqn](https://microsoft.codecogs.com/svg.latex?%20%5Ctau%20%3D%20%28s_0%2C%20a_0%2C%20s_1%2C%20a_1%2C%20...%29)
 <!--$$ \tau = (s_0, a_0, s_1, a_1, ...)$$-->
 
 
 The first state is sampled from a distribution.
+
 ![Eqn](https://microsoft.codecogs.com/svg.latex?%20s_0%20%5Csim%20%5Crho_0%28%5Ccdot%29)
 <!--$$ s_0 \sim \rho_0(\cdot)$$-->
 
+
 Deterministic policy is defined as follows,
+
 ![Eqn](https://microsoft.codecogs.com/svg.latex?s_%7Bt%2B1%7D%20%3D%20f%28s_t%20%2B%20a_t%29)
 <!--$$s_{t+1} = f(s_t + a_t)$$-->
 
+
 Stochastic policy is defined as follows,
+
 ![Eqn](https://microsoft.codecogs.com/svg.latex?s_%7Bt%2B1%7D%20%5Csim%20P%28%5Ccdot%20%7C%20s_t%2C%20a_t%29)
 <!--$$s_{t+1} \sim P(\cdot | s_t, a_t)$$-->
 
