@@ -5,13 +5,13 @@ The deep learning framework used here is [PyTorch 1.5](https://https://pytorch.o
 
 ## 1. [Policy Network Basis](./intro_policynet/policy.py)
 
-**1.1** Sample categorical distribution
+**1.1** Sample Categorical Distribution
 
 Sampling categorical distribution follows the following flow,
 Neural Network -> Logits -> Sample -> Logprob
 By this way we can simply have the final sampled entries and log probs.
 
-**1.2** Sample Gaussian distribution
+**1.2** Sample Gaussian Distribution
 
 Basically there are two ways to sample Gaussian distribution,
 
@@ -20,14 +20,15 @@ Basically there are two ways to sample Gaussian distribution,
 
 *Notice: $\mu$ and $log \sigma$ has range $(-\infty, \infty)$*
 
-**1.3** Reparameterization trick
+**1.3** Reparameterization Trick
 
 For Gaussian distribution, in order to make distribution differntiable, we need to use some method called reparameterization trick. So we can simply generate $\mu$ and $\sigma$ with NN models, then, using this trick (with generated standard Gaussian distribution numbers), to obtain the final differeitiable output.
 
 ![Eqn](https://microsoft.codecogs.com/svg.latex?%5Cmathbf%7BX%7D%20%5Csim%20N%28%5Cmu%2C%20%5Csigma%29%20%5Cto%20%5Cmathbf%7BX%7D%20%5Csim%20%5Cmu%20%2B%20%5Csigma%20%5Ccdot%20N%280%2C%201%29%20)
 <!--$$\mathbf{X} \sim N(\mu, \sigma) \to \mathbf{X} \sim \mu + \sigma \cdot N(0, 1) $$-->
 
-**1.4** Trajectorie
+
+**1.4** Trajectories
 
 A trajectory $\tau$ is defined as a squence of state $s_t$ and action $a_t$.
 
@@ -76,6 +77,7 @@ The target of reinforcement learning is maximizating the reward function over a 
 
 
 **1.6** RL Problem
+
 The RL problem: select a policy which maximizes expected return when the agent acts according to it. 
 The probablity of a trajectory given a policy can be described as follows,
 
@@ -96,6 +98,7 @@ The optimal policy can be described as follows,
 
 
 **1.7** Value functions
+
 Many kinds of value functions can be used to estimate the value of the state. Followings are a list of thest value functions.
 
 1. **On-Policy Value Function**
@@ -105,16 +108,19 @@ Many kinds of value functions can be used to estimate the value of the state. Fo
 
 
 2. **On-Policy Action-Value Function**
+
 ![Eqn](https://microsoft.codecogs.com/svg.latex?%20Q%5E%7B%5Cpi%7D%28s%2C%20a%29%20%3D%20%5Cunderset%7B%5Ctau%20%5Csim%20%5Cpi%7D%7B%5Cmathop%7B%5Cmathbb%7BE%7D%7D%7D%20%5BR%28%5Ctau%29%20%7C%20s_0%20%3D%20s%2C%20a_0%20%3D%20a%5D%20)
 <!--$$ Q^{\pi}(s, a) = \underset{\tau \sim \pi}{\mathop{\mathbb{E}}} [R(\tau) | s_0 = s, a_0 = a] $$-->
 
 
 3. **Optimal Value Function**
+ 
 ![Eqn](https://microsoft.codecogs.com/svg.latex?%20V%5E%2A%28s%29%20%3D%20%20%5Cunderset%7B%5Cpi%7D%7Bmax%7D%5Cunderset%7B%5Ctau%20%5Csim%20%5Cpi%7D%7B%5Cmathop%7B%5Cmathbb%7BE%7D%7D%7D%20%5BR%28%5Ctau%29%20%7C%20s_0%20%3D%20s%5D)
 <!--$$ V^*(s) =  \underset{\pi}{max}\underset{\tau \sim \pi}{\mathop{\mathbb{E}}} [R(\tau) | s_0 = s]$$-->
 
 
 4. **Optimal Action-Value Function**
+
 ![Eqn](https://microsoft.codecogs.com/svg.latex?%20Q%5E%2A%28s%2C%20a%29%20%3D%20%5Cunderset%7B%5Cpi%7D%7Bmax%7D%5Cunderset%7B%5Ctau%20%5Csim%20%5Cpi%7D%7B%5Cmathop%7B%5Cmathbb%7BE%7D%7D%7D%20%5BR%28%5Ctau%29%20%7C%20s_0%20%3D%20s%2C%20a_0%20%3D%20a%5D%20)
 <!--$$ Q^*(s, a) = \underset{\pi}{max}\underset{\tau \sim \pi}{\mathop{\mathbb{E}}} [R(\tau) | s_0 = s, a_0 = a] $$-->
 
@@ -129,9 +135,46 @@ There are two obvious relations,
 
 
 **1.8** The Optimal Action-Value Function and the Optimal Action
+
 If we know the Optimal Action-Value Function (which means the value after taking a randomly choosed action, then always choose the optimal policy), we can get the optimal action according to the following equation.
 ![Eqn](https://microsoft.codecogs.com/svg.latex?a%5E%2A%28s%29%20%3D%20%5Cunderset%7Ba%7D%7Bargmax%7DQ%5E%2A%28s%2C%20a%29)
 <!--$$a^*(s) = \underset{a}{argmax}Q^*(s, a)$$-->
 
 
 **1.9** Bellman Equations
+
+The four formulas in 1.7 can be express with Bellman equations, therefore we have:
+
+Bellman equation for on-policy value function:
+
+![Eqn](https://microsoft.codecogs.com/svg.latex?%20V%5E%5Cpi%28s%29%20%3D%20%5Cunderset%7Bs%27%20%5Csim%20P%7D%7B%5Cunderset%7Ba%20%5Csim%20%5Cpi%7D%7B%5Cmathop%7B%5Cmathbb%7BE%7D%7D%7D%7D%20%5Br%28s%2C%20a%29%20%2B%20%5Cgamma%20V%5E%5Cpi%28s%27%29%5D%20)
+<!--$$ V^\pi(s) = \underset{s' \sim P}{\underset{a \sim \pi}{\mathop{\mathbb{E}}}} [r(s, a) + \gamma V^\pi(s')] $$-->
+
+
+![Eqn](https://microsoft.codecogs.com/svg.latex?Q%5E%5Cpi%28s%2C%20a%29%20%3D%20%5Cunderset%7Bs%27%20%5Csim%20P%7D%7B%5Cmathop%7B%5Cmathbb%7BE%7D%7D%7D%20%5Br%28s%2C%20a%29%20%2B%20%5Cgamma%20%5Cunderset%7Ba%27%20%5Csim%20%5Cpi%7D%7B%5Cmathop%7B%5Cmathbb%7BE%7D%7D%7D%5BQ%5E%5Cpi%28s%27%2C%20a%27%29%5D)
+<!--$$Q^\pi(s, a) = \underset{s' \sim P}{\mathop{\mathbb{E}}} [r(s, a) + \gamma \underset{a' \sim \pi}{\mathop{\mathbb{E}}}[Q^\pi(s', a')]$$-->
+
+
+Bellman equation for optimal value function:
+
+![Eqn](https://microsoft.codecogs.com/svg.latex?%20V%5E%2A%28s%29%20%3D%20%5Cunderset%7Ba%7D%7Bmax%7D%5Cunderset%7Bs%27%20%5Csim%20p%7D%7B%5Cmathop%7B%5Cmathbb%7BE%7D%7D%7D%20%5Br%28s%2C%20a%29%20%2B%20%5Cgamma%20V%5E%2A%28s%27%29%5D%20)
+<!--$$ V^*(s) = \underset{a}{max}\underset{s' \sim p}{\mathop{\mathbb{E}}} [r(s, a) + \gamma V^*(s')] $$-->
+
+
+![Eqn](https://microsoft.codecogs.com/svg.latex?Q%5E%2A%28s%2C%20a%29%20%3D%20%5Cunderset%7Bs%27%20%5Csim%20P%7D%7B%5Cmathop%7B%5Cmathbb%7BE%7D%7D%7D%20%5Br%28s%2C%20a%29%20%2B%20%5Cgamma%20%5Cunderset%7Ba%27%7D%7Bmax%7D%5BQ%5E%2A%28s%27%2C%20a%27%29%5D)
+<!--$$Q^*(s, a) = \underset{s' \sim P}{\mathop{\mathbb{E}}} [r(s, a) + \gamma \underset{a'}{max}[Q^*(s', a')]$$-->
+
+
+**1.10** Advantage Funtions
+
+By using advantage functions, we can know how much a policy gains comparing to the average. The equation is defined by the followings.
+
+![Eqn](https://microsoft.codecogs.com/svg.latex?%20A%5E%5Cpi%28s%2C%20a%29%20%3D%20Q%5E%5Cpi%28s%2C%20a%29%20-%20V%5E%5Cpi%28s%29)
+<!--$$ A^\pi(s, a) = Q^\pi(s, a) - V^\pi(s)$$-->
+
+
+##  2. Kinds of RL Algorithms
+
+**2.1** Category of RL Algorithms
+
+![Classifcation Image](https://spinningup.openai.com/en/latest/_images/rl_algorithms_9_15.svg)

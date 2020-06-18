@@ -61,6 +61,7 @@ $$R(\tau) = \sum^T_{t=0} r_t$$
 $$ R(\tau) = \sum^{\infty}_{t=0} \gamma^t r_t $$
 
 **1.6** RL Problem
+
 The RL problem: select a policy which maximizes expected return when the agent acts according to it. 
 The probablity of a trajectory given a policy can be described as follows,
 
@@ -75,6 +76,7 @@ The optimal policy can be described as follows,
 $$\pi^* = \underset{\pi}{argmax}J(\pi)$$
 
 **1.7** Value functions
+
 Many kinds of value functions can be used to estimate the value of the state. Followings are a list of thest value functions.
 
 1. **On-Policy Value Function**
@@ -82,12 +84,15 @@ Many kinds of value functions can be used to estimate the value of the state. Fo
 $$ V^{\pi}(s) =  \underset{\tau \sim \pi}{\mathop{\mathbb{E}}} [R(\tau) | s_0 = s] $$
 
 2. **On-Policy Action-Value Function**
+
 $$ Q^{\pi}(s, a) = \underset{\tau \sim \pi}{\mathop{\mathbb{E}}} [R(\tau) | s_0 = s, a_0 = a] $$
 
 3. **Optimal Value Function**
+ 
 $$ V^*(s) =  \underset{\pi}{max}\underset{\tau \sim \pi}{\mathop{\mathbb{E}}} [R(\tau) | s_0 = s]$$
 
 4. **Optimal Action-Value Function**
+
 $$ Q^*(s, a) = \underset{\pi}{max}\underset{\tau \sim \pi}{\mathop{\mathbb{E}}} [R(\tau) | s_0 = s, a_0 = a] $$
 
 There are two obvious relations,
@@ -96,7 +101,34 @@ $$ V^{\pi}(s) = \underset{a \sim \pi}{\mathop{\mathbb{E}} } [Q^{\pi}(s, a)] $$
 $$  V^*(s) = \underset{a}{max}  Q^*(s, a) $$
 
 **1.8** The Optimal Action-Value Function and the Optimal Action
+
 If we know the Optimal Action-Value Function (which means the value after taking a randomly choosed action, then always choose the optimal policy), we can get the optimal action according to the following equation.
 $$a^*(s) = \underset{a}{argmax}Q^*(s, a)$$
 
 **1.9** Bellman Equations
+
+The four formulas in 1.7 can be express with Bellman equations, therefore we have:
+
+Bellman equation for on-policy value function:
+
+$$ V^\pi(s) = \underset{s' \sim P}{\underset{a \sim \pi}{\mathop{\mathbb{E}}}} [r(s, a) + \gamma V^\pi(s')] $$
+
+$$Q^\pi(s, a) = \underset{s' \sim P}{\mathop{\mathbb{E}}} [r(s, a) + \gamma \underset{a' \sim \pi}{\mathop{\mathbb{E}}}[Q^\pi(s', a')]$$
+
+Bellman equation for optimal value function:
+
+$$ V^*(s) = \underset{a}{max}\underset{s' \sim p}{\mathop{\mathbb{E}}} [r(s, a) + \gamma V^*(s')] $$
+
+$$Q^*(s, a) = \underset{s' \sim P}{\mathop{\mathbb{E}}} [r(s, a) + \gamma \underset{a'}{max}[Q^*(s', a')]$$
+
+**1.10** Advantage Funtions
+
+By using advantage functions, we can know how much a policy gains comparing to the average. The equation is defined by the followings.
+
+$$ A^\pi(s, a) = Q^\pi(s, a) - V^\pi(s)$$
+
+##  2. Kinds of RL Algorithms
+
+**2.1** Category of RL Algorithms
+
+![Classifcation Image](https://spinningup.openai.com/en/latest/_images/rl_algorithms_9_15.svg)
