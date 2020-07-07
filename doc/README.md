@@ -131,4 +131,6 @@ $$ A^\pi(s, a) = Q^\pi(s, a) - V^\pi(s)$$
 
 **2.1** Category of RL Algorithms
 
+This figure is from OpenAI's spinning up RL. As the figure indicates, basically the RL Algorithms can be classifed as Model-Free RL and Model-Based RL.
+
 ![Classifcation Image](https://spinningup.openai.com/en/latest/_images/rl_algorithms_9_15.svg)
